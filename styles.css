@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-dark: #262b2f;
+    --color-primary: #94d2bd;
+    --color-secondary: #ee9b00;
+}
+
+body {
+    font-family: 'Martian Mono', monospace;
+}
+
+.main-container {
+    position: relative;
+    /* overflow: hidden; */
+}
+
+.clock-container {
+    padding: 12px;
+    height: auto;
+    background-color: var(--color-dark);
+    z-index: 1;
+    border-radius: 36px;
+    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+        0px 3px 24px rgba(0, 0, 0, 0.33);
+    opacity: 1;
+}
+
+.clock-container div:nth-child(even) {
+    color: var(--color-primary);
+}
+
+
+.clock-digits {
+    font-size: 150px;
+}
+
+
+/* Mode Container */
+.mode-container {
+    position: absolute;
+    height: 100%;
+    width: 66%;
+    top: 50%;
+    left: 50%;
+    /* Adjust height */
+    transform: translate(-50%, -100%);
+    background-color: var(--color-dark);
+    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+        0px 3px 24px rgba(0, 0, 0, 0.33);
+    border-radius: 36px;
+    overflow: hidden;
+}
+
+.mode-container .progress-bar {
+    width: 100%;
+    background-color: var(--color-primary);
+    height: 4%;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 1);
+}
+
+/* Mode switcher */
+
+.mode-switcher {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mode1,
+.mode2 {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mode-switcher input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.mode-switcher label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: var(--color-dark);
+    padding: 10px 20px;
+    font-size: 16px;
+
+
+}
+
+.mode-switcher input[type="radio"]:checked+label {
+    background-color: var(--color-primary);
+    color: var(--color-dark);
+}
+
+
+/* Buttons container */
+.buttons-container {
+    position: absolute;
+    height: 100%;
+    width: 66%;
+    top: 55%;
+    left: 50%;
+    /* Adjust height */
+    transform: translate(-50%, 0%);
+    background-color: var(--color-dark);
+    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+        0px 3px 24px rgba(0, 0, 0, 0.33);
+    border-radius: 36px;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.buttons {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.control-button {
+    margin-top: 15%;
+    font-size: 72px;
+    cursor: pointer;
+    color: var(--color-secondary);
+}
+
+.control-button:hover {
+    color: var(--color-primary);
+}
+
+.control-button.active {
+    color: var(--color-primary);
+}
+
+@media (max-width: 991px) {
+    .clock-digits {
+        font-size: 90px;
+    }
+}
+
+@media (max-width: 768px) {
+    .clock-digits {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 576px) {
+    .clock-digits {
+        font-size: 48px;
+    }
+
+    .clock-units {
+        font-size: 10px;
+    }
+}
