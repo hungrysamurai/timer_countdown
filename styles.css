@@ -18,7 +18,6 @@ body {
 
 .main-container {
     position: relative;
-    /* overflow: hidden; */
 }
 
 .clock-container {
@@ -40,7 +39,6 @@ body {
 .clock-digits {
     font-size: 150px;
 }
-
 
 /* Mode Container */
 .mode-container {
