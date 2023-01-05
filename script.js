@@ -3,6 +3,15 @@ const playBtn = document.querySelector(".play-btn");
 const playIcon = document.querySelector(".bi.bi-play");
 const stopBtn = document.querySelector(".stop-btn");
 const saveBtn = document.querySelector(".save-btn");
+const savedContainer = document.querySelector(".saved-timers-container");
+const savedTimersEl = document.querySelector(".saved-timers");
+const savedCloseBtn = document.querySelector(".saved-timers-container button");
+
+// Mode switch container
+const modeSwitcher = document.querySelector(".mode-switcher");
+const progressBar = document.querySelector(".progress-bar");
+const timerRadio = document.querySelector("#timer-radio");
+const countdownRadio = document.querySelector("#countdown-radio");
 
 // Timer digits
 const hoursEl = document.querySelector("#hours");
@@ -12,6 +21,23 @@ const millisecondsEl = document.querySelector("#milliseconds");
 
 let timerInterval;
 let timerState;
+
+// ///////////////////////////////////////TIMER
+
+// Check localStorage for saved timers
+if (!localStorage.getItem("savedTimers")) {
+  localStorage.setItem("savedTimers", JSON.stringify([]));
+}
+let savedTimers = JSON.parse(localStorage.getItem("savedTimers"));
+
+// Retrieve saved timers from localStorage and render them to DOM
+savedTimers.forEach((time, i) => {
+  // Add close button to container
+  if (i === 0) {
+    savedCloseBtn.classList.remove("hidden");
+  }
+  updateDOMSavedTimers(convertTime(time));
+});
 
 // Play/pause timer
 playBtn.addEventListener("click", () => {
@@ -31,6 +57,16 @@ stopBtn.addEventListener("click", () => {
   playIcon.className = "bi bi-play";
   playBtn.classList.remove("active");
   updateDOMTimer(0, 0, 0, 0);
+});
+
+// Save Timer
+saveBtn.addEventListener("click", saveTimer);
+
+// Remove all saved timers
+savedContainer.addEventListener("click", (e) => {
+  if (e.target.tagName === "I" || e.target.tagName === "BUTTON") {
+    resetSavedTimers();
+  }
 });
 
 function initializeTimer() {
@@ -76,18 +112,35 @@ function unFreezeTimer() {
   console.log(timerState);
 }
 
+// Save timer
+
+function saveTimer() {
+  let currentTime;
+  if (!timerState) return;
+
+  if (timerState.status === "active")
+    currentTime = Date.now() - timerState.initialTimestamp;
+  else currentTime = timerState.timerProgress;
+
+  savedTimers.push(currentTime);
+
+  if (savedTimers.length === 1) {
+    savedCloseBtn.classList.remove("hidden");
+  }
+
+  localStorage.setItem("savedTimers", JSON.stringify(savedTimers));
+  updateDOMSavedTimers(convertTime(currentTime));
+}
+
 function timerUpdate(startTime) {
   const t = Date.now() - startTime;
-
-  const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((t / 1000 / 60) % 60);
-  const seconds = Math.floor((t / 1000) % 60);
-  const milliseconds = Math.floor((t / 10) % 100);
+  const { hours, minutes, seconds, milliseconds } = convertTime(t);
 
   updateDOMTimer(hours, minutes, seconds, milliseconds);
 }
 
 // Make 00 instead of 0
+
 function getZero(num) {
   if (num >= 0 && num < 10) {
     return `0${num}`;
@@ -96,9 +149,50 @@ function getZero(num) {
   }
 }
 
+// Convert ms to hours, minutes, seconds, ms (00)
+
+function convertTime(timeStamp) {
+  const hours = Math.floor((timeStamp / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeStamp / 1000 / 60) % 60);
+  const seconds = Math.floor((timeStamp / 1000) % 60);
+  const milliseconds = Math.floor((timeStamp / 10) % 100);
+
+  return { hours, minutes, seconds, milliseconds };
+}
+
+// Update DOM
+
 function updateDOMTimer(hours, minutes, seconds, milliseconds) {
   hoursEl.textContent = getZero(hours);
   minutesEl.textContent = getZero(minutes);
   secondsEl.textContent = getZero(seconds);
   millisecondsEl.textContent = getZero(milliseconds);
+}
+
+function updateDOMSavedTimers({ hours, minutes, seconds, milliseconds }) {
+  const element = document.createElement("div");
+  element.className = "saved-timer m-1";
+  element.innerHTML = `
+  <span>
+  ${getZero(hours)}:${getZero(minutes)}:${getZero(seconds)}:${getZero(
+    milliseconds
+  )}
+  </span>
+  `;
+
+  savedTimersEl.append(element);
+}
+
+function resetSavedTimers() {
+  // Clear DOM
+  savedTimersEl.innerHTML = "";
+
+  // Purge savedTimers array
+  savedTimers = [];
+
+  // Purge localStorage
+  localStorage.removeItem("savedTimers");
+
+  // Hide button
+  savedCloseBtn.classList.add("hidden");
 }

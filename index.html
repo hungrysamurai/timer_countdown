@@ -16,14 +16,15 @@
 </head>
 
 <body>
-    <section class="bg-dark min-vh-100 min-vw-100 d-flex align-items-center justify-content-center position-relative">
+    <section class="bg-dark min-vh-100 d-flex flex-column align-items-center justify-content-center position-relative">
+
         <div class="container text-white">
 
             <!-- Main timer container -->
             <div class="main-container d-flex w-100">
 
                 <!-- Clock Container -->
-                <div class="clock-container d-flex w-100 h-auto">
+                <div class="clock-container timer d-flex w-100 h-auto">
 
                     <!-- Hours container -->
                     <div class="hours-container d-flex flex-column align-items-center justify-content-center col-3">
@@ -53,7 +54,7 @@
                 </div>
 
                 <!-- Mode container -->
-                <div class="mode-container">
+                <div class="mode-container timer">
                     <!-- Progress bar -->
                     <div class="progress-bar"></div>
 
@@ -68,10 +69,18 @@
                             <label for="countdown-radio">Countdown</label>
                         </div>
                     </div>
+                    <form class="countdown-form d-flex align-items-center justify-content-center">
+                        <input class="col-3" type="number" id="" placeholder="hours">
+                        <input class="col-3" type="number" id="" placeholder="minutes">
+                        <input class="col-3" type="number" id="" placeholder="seconds">
+
+                    </form>
 
                 </div>
 
-                <!-- Buttons container -->
+
+
+                <!-- Timer Buttons container -->
                 <div class="buttons-container">
                     <div class="buttons">
                         <button class="btn btn-link control-button play-btn shadow-none">
@@ -90,16 +99,14 @@
 
 
         </div>
-        <div class="saved-timers-container p-3 text-white d-flex align-items-center justify-content-center flex-wrap">
-            <div class="saved-timer m-1">
-                <span>00:00:00:00</span>
-            </div>
-            <div class="saved-timer m-1">
-                <span>00:00:00:00</span>
-            </div>
-            <div class="saved-timer m-1">
-                <span>00:00:00:00</span>
-            </div>
+
+        <!-- Saved Timers -->
+        <div
+            class="saved-timers-container p-3 text-white d-flex align-items-center justify-content-center flex-wrap flex-column">
+            <button class="btn btn-link shadow-none hidden">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="saved-timers d-flex flex-wrap align-items-center justify-content-center"></div>
         </div>
     </section>
 
