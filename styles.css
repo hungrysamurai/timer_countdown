@@ -7,6 +7,7 @@
 }
 
 :root {
+    --index: calc(1vw + 1vh);
     --color-dark: #262b2f;
     --color-primary: #94d2bd;
     --color-secondary: #ee9b00;
@@ -18,17 +19,16 @@ body {
 
 .main-container {
     position: relative;
+    margin-top: -20vh;
 }
 
 .clock-container {
     padding: 12px;
-    height: auto;
     background-color: var(--color-dark);
-    z-index: 1;
+    z-index: 2;
     border-radius: 36px;
     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
         0px 3px 24px rgba(0, 0, 0, 0.33);
-    opacity: 1;
 }
 
 .clock-container div:nth-child(even) {
@@ -37,7 +37,7 @@ body {
 
 
 .clock-digits {
-    font-size: 150px;
+    font-size: calc(var(--index) * 5);
 }
 
 /* Mode Container */
@@ -98,7 +98,7 @@ body {
     text-align: center;
     background-color: var(--color-dark);
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: calc(var(--index) * .8);
 
 
 }
@@ -117,12 +117,12 @@ body {
     top: 55%;
     left: 50%;
     /* Adjust height */
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, -10%);
     background-color: var(--color-dark);
     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
         0px 3px 24px rgba(0, 0, 0, 0.33);
     border-radius: 36px;
-    z-index: 0;
+    z-index: 1;
     overflow: hidden;
 }
 
@@ -136,8 +136,8 @@ body {
 
 
 .control-button {
-    margin-top: 15%;
-    font-size: 72px;
+    margin-top: 17%;
+    font-size: calc(var(--index) * 3.3);
     cursor: pointer;
     color: var(--color-secondary);
 }
@@ -146,14 +146,31 @@ body {
     color: var(--color-primary);
 }
 
+.control-button:active {
+    transform: scale(0.9);
+}
+
 .control-button.active {
     color: var(--color-primary);
 }
 
-@media (max-width: 991px) {
-    .clock-digits {
-        font-size: 90px;
-    }
+
+/* Saved timers */
+.saved-timers-container {
+    position: absolute;
+    bottom: 15vh;
+    min-width: 66%;
+    z-index: 0;
+}
+
+
+.saved-timers-container div:nth-child(even) {
+    color: var(--color-primary);
+}
+
+.saved-timer {
+    cursor: pointer;
+    font-size: calc(var(--index) * .6);
 }
 
 @media (max-width: 768px) {

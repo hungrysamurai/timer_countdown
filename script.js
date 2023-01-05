@@ -2,6 +2,7 @@
 const playBtn = document.querySelector(".play-btn");
 const playIcon = document.querySelector(".bi.bi-play");
 const stopBtn = document.querySelector(".stop-btn");
+const saveBtn = document.querySelector(".save-btn");
 
 // Timer digits
 const hoursEl = document.querySelector("#hours");
