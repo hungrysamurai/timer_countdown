@@ -1,3 +1,4 @@
+// DOM elements
 const playBtn = document.querySelector(".play-btn");
 const playIcon = document.querySelector(".bi.bi-play");
 const stopBtn = document.querySelector(".stop-btn");
@@ -44,7 +45,7 @@ function initializeTimer() {
   playBtn.classList.add("active");
 
   // Initialize interval
-  timerInterval = setInterval(timerUpdate, 10, timerState.initialTimestamp);
+  timerInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
 }
 
 function freezeTimer() {
@@ -57,22 +58,21 @@ function freezeTimer() {
 
   // Stop Interval
   clearInterval(timerInterval);
+  console.log(timerState);
 }
 
 function unFreezeTimer() {
   // Update status
   timerState.status = "active";
+  timerState.initialTimestamp = Date.now() - timerState.timerProgress;
 
   // Change DOM
   playIcon.className = "bi bi-pause";
   playBtn.classList.add("active");
 
   // Initialize interval
-  timerInterval = setInterval(
-    timerUpdate,
-    10,
-    Date.now() - timerState.timerProgress
-  );
+  timerInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
+  console.log(timerState);
 }
 
 function timerUpdate(startTime) {
