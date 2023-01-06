@@ -51,7 +51,6 @@ let countdownState;
 
 // Switch modes
 modeSwitcher.addEventListener("click", (e) => {
-  console.log(e);
   if (e.pointerId === 1 || e.pointerId === 0) return;
 
   const currentMode = e.target.id.split("-")[0];
@@ -104,8 +103,6 @@ function initializeCountdown() {
 }
 
 function freezeCountdown() {
-  console.log(countdownState);
-
   countdownState.status = "paused";
   countdownPlayIcon.className = "bi bi-play";
 
@@ -239,7 +236,6 @@ function freezeTimer() {
 
   // Stop Interval
   clearInterval(globalInterval);
-  console.log(timerState);
 }
 
 function unFreezeTimer() {
@@ -253,7 +249,6 @@ function unFreezeTimer() {
 
   // Initialize interval
   globalInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
-  console.log(timerState);
 }
 
 function stopTimer() {
