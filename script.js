@@ -1,19 +1,37 @@
 // DOM elements
-const playBtn = document.querySelector(".play-btn");
-const playIcon = document.querySelector(".bi.bi-play");
-const stopBtn = document.querySelector(".stop-btn");
+
+// Timer elements
+const timerButtonsContainer = document.querySelector(
+  ".timer-buttons-container"
+);
+const timerPlayBtn = document.querySelector(".timer-play-btn");
+const timerPlayIcon = document.querySelector(".timer-play-btn .bi.bi-play");
+const timerStopBtn = document.querySelector(".timer-stop-btn");
 const saveBtn = document.querySelector(".save-btn");
 const savedContainer = document.querySelector(".saved-timers-container");
 const savedTimersEl = document.querySelector(".saved-timers");
 const savedCloseBtn = document.querySelector(".saved-timers-container button");
 
+// Countdown elements
+const countdownButtonsContainer = document.querySelector(
+  ".countdown-buttons-container"
+);
+const countdownPlayBtn = document.querySelector(".countdown-play-btn");
+const countdownPlayIcon = document.querySelector(
+  ".countdown-play-btn .bi.bi-play"
+);
+const countdownStopBtn = document.querySelector(".countdown-stop-btn");
+
 // Mode switch container
+const modeContainer = document.querySelector(".mode-container");
 const modeSwitcher = document.querySelector(".mode-switcher");
 const progressBar = document.querySelector(".progress-bar");
 const timerRadio = document.querySelector("#timer-radio");
 const countdownRadio = document.querySelector("#countdown-radio");
 
 // Timer digits
+const clockContainer = document.querySelector(".clock-container");
+
 const hoursEl = document.querySelector("#hours");
 const minutesEl = document.querySelector("#minutes");
 const secondsEl = document.querySelector("#seconds");
@@ -22,7 +40,24 @@ const millisecondsEl = document.querySelector("#milliseconds");
 let timerInterval;
 let timerState;
 
-// ///////////////////////////////////////TIMER
+let countdownInterval;
+let countdownState;
+
+let globalState = {
+  mode: "timer",
+};
+
+// Switch modes
+modeSwitcher.addEventListener("click", (e) => {
+  if (e.pointerId !== 1) return;
+
+  const currentMode = e.target.id.split("-")[0];
+  globalState.mode = currentMode;
+  transformDOM(currentMode);
+  console.log(globalState);
+});
+
+////////////////////////////////////////TIMER
 
 // Check localStorage for saved timers
 if (!localStorage.getItem("savedTimers")) {
@@ -40,7 +75,7 @@ savedTimers.forEach((time, i) => {
 });
 
 // Play/pause timer
-playBtn.addEventListener("click", () => {
+timerPlayBtn.addEventListener("click", () => {
   if (!timerState) {
     initializeTimer();
     return;
@@ -51,11 +86,11 @@ playBtn.addEventListener("click", () => {
 });
 
 // Reset timer
-stopBtn.addEventListener("click", () => {
+timerStopBtn.addEventListener("click", () => {
   timerState = undefined;
   clearInterval(timerInterval);
-  playIcon.className = "bi bi-play";
-  playBtn.classList.remove("active");
+  timerPlayIcon.className = "bi bi-play";
+  timerPlayBtn.classList.remove("active");
   updateDOMTimer(0, 0, 0, 0);
 });
 
@@ -78,8 +113,8 @@ function initializeTimer() {
   };
 
   // Change button
-  playIcon.className = "bi bi-pause";
-  playBtn.classList.add("active");
+  timerPlayIcon.className = "bi bi-pause";
+  timerPlayBtn.classList.add("active");
 
   // Initialize interval
   timerInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
@@ -91,7 +126,7 @@ function freezeTimer() {
   timerState.timerProgress = Date.now() - timerState.initialTimestamp;
 
   // Change DOM
-  playIcon.className = "bi bi-play";
+  timerPlayIcon.className = "bi bi-play";
 
   // Stop Interval
   clearInterval(timerInterval);
@@ -104,8 +139,8 @@ function unFreezeTimer() {
   timerState.initialTimestamp = Date.now() - timerState.timerProgress;
 
   // Change DOM
-  playIcon.className = "bi bi-pause";
-  playBtn.classList.add("active");
+  timerPlayIcon.className = "bi bi-pause";
+  timerPlayBtn.classList.add("active");
 
   // Initialize interval
   timerInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
@@ -161,6 +196,23 @@ function convertTime(timeStamp) {
 }
 
 // Update DOM
+
+function transformDOM(mode) {
+  // Change digits colors
+  clockContainer.className = `clock-container ${mode} d-flex w-100 h-auto`;
+
+  // Transform mode container
+  modeContainer.className = `mode-container ${mode}`;
+
+  // Progress bar re-color
+  progressBar.className = `progress-bar ${mode}`;
+
+  // Switch buttons containers
+  timerButtonsContainer.classList.remove("show");
+  countdownButtonsContainer.classList.remove("show");
+
+  document.querySelector(`.${mode}-buttons-container`).classList.add("show");
+}
 
 function updateDOMTimer(hours, minutes, seconds, milliseconds) {
   hoursEl.textContent = getZero(hours);

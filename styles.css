@@ -70,9 +70,15 @@ body {
 
 .mode-container .progress-bar {
     width: 100%;
-    background-color: var(--color-primary);
     height: 4%;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 1);
+}
+
+.mode-container .progress-bar.timer {
+    background-color: var(--color-primary);
+}
+
+.mode-container .progress-bar.countdown {
+    background-color: var(--color-primary2);
 }
 
 /* Mode switcher */
@@ -98,6 +104,7 @@ body {
     opacity: 0;
     position: fixed;
     width: 0;
+    pointer-events: none !important;
 }
 
 .mode-switcher label {
@@ -112,17 +119,54 @@ body {
     padding: 10px 20px;
     font-size: calc(var(--index) * .8);
 
-
 }
 
 .mode-switcher input[type="radio"]:checked+label {
-    background-color: var(--color-primary);
     color: var(--color-dark);
 }
 
+.mode-switcher input[type="radio"]#timer-radio:checked+label {
+    background-color: var(--color-primary);
+}
 
-/* Buttons container */
-.buttons-container {
+.mode-switcher input[type="radio"]#countdown-radio:checked+label {
+    background-color: var(--color-primary2);
+}
+
+/* Countdown form */
+.countdown-form {
+    padding: 1%;
+}
+
+.countdown-form input {
+    padding: 1%;
+    width: 20%;
+    border-radius: 5px;
+    border: none;
+    margin: 0 3px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--color-dark);
+}
+
+.countdown-form input:focus {
+    outline: none;
+}
+
+.countdown-form input::placeholder {
+    text-align: center;
+}
+
+.countdown-form input::-webkit-outer-spin-button,
+.countdown-form input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Timer Buttons container */
+.timer-buttons-container {
+    display: none;
     position: absolute;
     height: 100%;
     width: 66%;
@@ -136,6 +180,32 @@ body {
     border-radius: 36px;
     z-index: 1;
     overflow: hidden;
+}
+
+.timer-buttons-container.show {
+    display: block;
+}
+
+/* Countdown buttons container */
+.countdown-buttons-container {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 66%;
+    top: 50%;
+    left: 50%;
+    /* Adjust height */
+    transform: translate(-50%, 0%);
+    background-color: var(--color-dark);
+    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+        0px 3px 24px rgba(0, 0, 0, 0.33);
+    border-radius: 36px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.countdown-buttons-container.show {
+    display: block;
 }
 
 .buttons {
@@ -154,16 +224,24 @@ body {
     color: var(--color-secondary);
 }
 
-.control-button:hover {
+.timer-buttons-container .control-button:hover {
     color: var(--color-primary);
+}
+
+.countdown-buttons-container .control-button:hover {
+    color: var(--color-primary2);
 }
 
 .control-button:active {
     transform: scale(0.9);
 }
 
-.control-button.active {
+.timer-buttons-container .control-button.active {
     color: var(--color-primary);
+}
+
+.countdown-buttons-container .control-button.active {
+    color: var(--color-primary2);
 }
 
 

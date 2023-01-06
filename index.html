@@ -24,7 +24,7 @@
             <div class="main-container d-flex w-100">
 
                 <!-- Clock Container -->
-                <div class="clock-container timer d-flex w-100 h-auto">
+                <div class="clock-container countdown d-flex w-100 h-auto">
 
                     <!-- Hours container -->
                     <div class="hours-container d-flex flex-column align-items-center justify-content-center col-3">
@@ -54,44 +54,56 @@
                 </div>
 
                 <!-- Mode container -->
-                <div class="mode-container timer">
+                <div class="mode-container countdown">
                     <!-- Progress bar -->
-                    <div class="progress-bar"></div>
+                    <div class="progress-bar countdown"></div>
 
                     <!-- Mode Switcher -->
                     <div class="mode-switcher">
                         <div class="mode1">
-                            <input type="radio" name="mode-switcher" id="timer-radio" checked>
-                            <label for="timer-radio">Timer</label>
+                            <input type="radio" name="mode-switcher" id="timer-radio">
+                            <label for="timer-radio" id="timer-label">Timer</label>
                         </div>
                         <div class="mode2">
-                            <input type="radio" name="mode-switcher" id="countdown-radio">
-                            <label for="countdown-radio">Countdown</label>
+                            <input type="radio" name="mode-switcher" id="countdown-radio" checked>
+                            <label for="countdown-radio" id="countdown-label">Countdown</label>
                         </div>
                     </div>
-                    <form class="countdown-form d-flex align-items-center justify-content-center">
-                        <input class="col-3" type="number" id="" placeholder="hours">
-                        <input class="col-3" type="number" id="" placeholder="minutes">
-                        <input class="col-3" type="number" id="" placeholder="seconds">
 
+                    <!-- Countdown setter -->
+                    <form class="countdown-form d-flex justify-content-center">
+                        <input class="col-4" type="number" id="hours-input" placeholder="hours" min="0" max="99">
+                        <input class="col-4" type="number" id="minutes-input" placeholder="minutes" min="0" max="99">
+                        <input class="col-4" type="number" id="seconds-input" placeholder="seconds" min="0" max="99">
                     </form>
 
                 </div>
 
-
-
                 <!-- Timer Buttons container -->
-                <div class="buttons-container">
+                <div class="timer-buttons-container">
                     <div class="buttons">
-                        <button class="btn btn-link control-button play-btn shadow-none">
+                        <button class="btn btn-link control-button timer-play-btn shadow-none">
                             <i class="bi bi-play"></i>
                         </button>
-                        <button class="btn btn-link control-button stop-btn shadow-none">
+                        <button class="btn btn-link control-button timer-stop-btn shadow-none">
                             <i class="bi bi-stop"></i>
                         </button>
                         <button class="btn btn-link control-button save-btn shadow-none">
                             <i class="bi bi-record"></i>
                         </button>
+                    </div>
+                </div>
+
+                <!-- Countdown Buttons container -->
+                <div class="countdown-buttons-container show">
+                    <div class="buttons">
+                        <button class="btn btn-link control-button countdown-play-btn shadow-none">
+                            <i class="bi bi-play"></i>
+                        </button>
+                        <button class="btn btn-link control-button countdown-stop-btn shadow-none">
+                            <i class="bi bi-stop"></i>
+                        </button>
+
                     </div>
                 </div>
 
