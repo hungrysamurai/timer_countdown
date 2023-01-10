@@ -2,12 +2,19 @@
 import { getElement, getZero, convertTime, updateDOMTimer } from "./utils.js";
 
 // Import timer functions
-import { getSavedTimers, saveTimer, resetSavedTimers } from "./timer.js";
+import {
+  initializeTimer,
+  freezeTimer,
+  unFreezeTimer,
+  resetTimer,
+  timerUpdate,
+} from "./timer.js";
+
+// Import save timer functions
+import { getSavedTimers, saveTimer, resetSavedTimers } from "./saveTimer.js";
 
 // Import countdown functions
 import {} from "./countdown.js";
-
-// DOM elements
 
 // Timer elements
 const timerButtonsContainer = getElement(".timer-buttons-container");
@@ -41,8 +48,6 @@ const inputsArray = [hoursInput, minutesInput, secondsInput];
 const modeContainer = getElement(".mode-container");
 const modeSwitcher = getElement(".mode-switcher");
 const progressBar = getElement(".progress-bar");
-const timerRadio = getElement("#timer-radio");
-const countdownRadio = getElement("#countdown-radio");
 
 // Timer digits
 const clockContainer = getElement(".clock-container");
@@ -55,7 +60,6 @@ let digitsObject = { hoursEl, minutesEl, secondsEl, millisecondsEl };
 
 let globalInterval;
 
-// States variables
 let timerState;
 let countdownState;
 
@@ -67,25 +71,46 @@ modeSwitcher.addEventListener("click", (e) => {
   transformDOM(currentMode);
 
   // Reset timer & countdown
-  stopTimer();
+  resetTimer(timerState, timerElements, digitsObject, globalInterval);
   resetCountdown();
 });
 
 ////////////////////////////////////////   TIMER
 
-// Play/pause timer
+// Play/pause
 timerPlayBtn.addEventListener("click", () => {
   if (!timerState) {
-    initializeTimer();
+    // Initialize timer
+    timerState = initializeTimer(timerState, timerElements);
+
+    // Initialize interval
+    globalInterval = setInterval(
+      timerUpdate,
+      4,
+      timerState.initialTimestamp,
+      digitsObject
+    );
     return;
   }
 
-  if (timerState.status === "active") freezeTimer();
-  else unFreezeTimer();
+  if (timerState.status === "active") {
+    timerState = freezeTimer(timerState, timerElements, globalInterval);
+  } else if (timerState.status === "paused") {
+    timerState = unFreezeTimer(timerState, timerElements);
+    // Initialize interval again
+    globalInterval = setInterval(
+      timerUpdate,
+      4,
+      timerState.initialTimestamp,
+      digitsObject
+    );
+  }
 });
 
 // Reset timer
-timerStopBtn.addEventListener("click", stopTimer);
+timerStopBtn.addEventListener("click", () => {
+  resetTimer(timerState, timerElements, digitsObject, globalInterval);
+});
 
 // Save Timer
 saveBtn.addEventListener("click", () => {
@@ -98,60 +123,6 @@ savedContainer.addEventListener("click", (e) => {
     resetSavedTimers();
   }
 });
-
-function initializeTimer() {
-  // Set initial timer state object
-  timerState = {
-    status: "active",
-    timerProgress: 0,
-    initialTimestamp: Date.now(),
-  };
-
-  // Change button
-  timerPlayIcon.className = "bi bi-pause";
-  timerPlayBtn.classList.add("active");
-  console.log(timerState);
-  // Initialize interval
-  globalInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
-}
-
-function freezeTimer() {
-  // Update status
-  timerState.status = "paused";
-  timerState.timerProgress = Date.now() - timerState.initialTimestamp;
-
-  // Change DOM
-  timerPlayIcon.className = "bi bi-play";
-
-  // Stop Interval
-  clearInterval(globalInterval);
-}
-
-function unFreezeTimer() {
-  // Update status
-  timerState.status = "active";
-  timerState.initialTimestamp = Date.now() - timerState.timerProgress;
-
-  // Change DOM
-  timerPlayIcon.className = "bi bi-pause";
-  timerPlayBtn.classList.add("active");
-
-  // Initialize interval
-  globalInterval = setInterval(timerUpdate, 4, timerState.initialTimestamp);
-}
-
-function stopTimer() {
-  timerState = undefined;
-  clearInterval(globalInterval);
-  timerPlayIcon.className = "bi bi-play";
-  timerPlayBtn.classList.remove("active");
-  updateDOMTimer(undefined, digitsObject);
-}
-
-function timerUpdate(startTime) {
-  const t = Date.now() - startTime;
-  updateDOMTimer(convertTime(t), digitsObject);
-}
 
 ///////////////////////////////////////   COUNTDOWN
 
