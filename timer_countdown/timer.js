@@ -44,24 +44,26 @@ const unFreezeTimer = (timerState, { timerPlayIcon, timerPlayBtn }) => {
   return timerState;
 };
 
+// Reset timer to 00
 const resetTimer = (
   timerState,
   { timerPlayIcon, timerPlayBtn },
-  digitsObject,
+  digitsElements,
   interval
 ) => {
   timerState = undefined;
   clearInterval(interval);
   timerPlayIcon.className = "bi bi-play";
   timerPlayBtn.classList.remove("active");
-  updateDOMTimer(undefined, digitsObject);
+  updateDOMTimer(undefined, digitsElements);
 
   return timerState;
 };
 
-const timerUpdate = (startTime, digitsObject) => {
+// Update timer function
+const timerUpdate = (startTime, digitsElements) => {
   const t = Date.now() - startTime;
-  updateDOMTimer(convertTime(t), digitsObject);
+  updateDOMTimer(convertTime(t), digitsElements);
 };
 
 export { initializeTimer, freezeTimer, unFreezeTimer, resetTimer, timerUpdate };

@@ -1,12 +1,8 @@
 import { getElement, convertTime, getZero } from "./utils.js";
 
-// Saved timers elements
-const savedCloseBtn = getElement(".saved-timers-container button");
-const savedTimersEl = getElement(".saved-timers");
-
 let savedTimers;
 
-const getSavedTimers = () => {
+const getSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   // Check localStorage for saved timers
   if (!localStorage.getItem("savedTimers")) {
     localStorage.setItem("savedTimers", JSON.stringify([]));
@@ -20,12 +16,12 @@ const getSavedTimers = () => {
     if (i === 0) {
       savedCloseBtn.classList.remove("hidden");
     }
-    updateDOMSavedTimers(convertTime(time));
+    updateDOMSavedTimers(convertTime(time), savedTimersEl);
   });
 };
 
 // Save timer
-const saveTimer = (timerState) => {
+const saveTimer = (timerState, { savedCloseBtn, savedTimersEl }) => {
   let currentTime;
   if (!timerState) return;
 
@@ -40,24 +36,11 @@ const saveTimer = (timerState) => {
   }
 
   localStorage.setItem("savedTimers", JSON.stringify(savedTimers));
-  updateDOMSavedTimers(convertTime(currentTime));
+  updateDOMSavedTimers(convertTime(currentTime), savedTimersEl);
 };
 
-function updateDOMSavedTimers({ hours, minutes, seconds, milliseconds }) {
-  const element = document.createElement("div");
-  element.className = "saved-timer m-1";
-  element.innerHTML = `
-  <span>
-  ${getZero(hours)}:${getZero(minutes)}:${getZero(seconds)}:${getZero(
-    milliseconds
-  )}
-  </span>
-  `;
-
-  savedTimersEl.append(element);
-}
-
-function resetSavedTimers() {
+// Reset all saved timers
+const resetSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   // Clear DOM
   savedTimersEl.innerHTML = "";
 
@@ -71,6 +54,17 @@ function resetSavedTimers() {
   savedCloseBtn.classList.add("hidden");
 }
 
-// Timer fucntions
+// Update seved timers container
+function updateDOMSavedTimers({ hours, minutes, seconds, milliseconds }, savedTimersEl) {
+  const element = document.createElement("div");
+  element.className = "saved-timer m-1";
+  element.innerHTML = `
+  <span>
+  ${getZero(hours)}:${getZero(minutes)}:${getZero(seconds)}:${getZero(milliseconds)}
+  </span>
+  `;
+
+  savedTimersEl.append(element);
+}
 
 export { getSavedTimers, saveTimer, resetSavedTimers };

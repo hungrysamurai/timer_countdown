@@ -37,4 +37,46 @@ const convertTime = (timeStamp) => {
   return { hours, minutes, seconds, milliseconds };
 };
 
-export { getElement, getZero, convertTime, updateDOMTimer };
+// Switch modes in DOM
+const transformDOM = (mode, elementsObject) => {
+  // Get elements to transform
+  const { clockContainer, modeContainer, progressBar, timerButtonsContainer, countdownButtonsContainer } = elementsObject
+
+  // Change digits colors
+  clockContainer.className = `clock-container ${mode} d-flex w-100 h-auto`;
+
+  // Transform mode container
+  modeContainer.className = `mode-container ${mode}`;
+
+  // Progress bar re-color
+  progressBar.className = `progress-bar ${mode}`;
+
+  // Switch buttons containers
+  timerButtonsContainer.classList.remove("show");
+  countdownButtonsContainer.classList.remove("show");
+
+  document.querySelector(`.${mode}-buttons-container`).classList.add("show");
+}
+
+const setInputs = (inputsArray) => {
+  // set inputs numeric limitations
+  inputsArray.forEach((input) => {
+    input.addEventListener("input", () => {
+      setUpInput(input);
+    });
+  });
+}
+
+function setUpInput(el) {
+  if (el.value != "") {
+    if (parseInt(el.value) < parseInt(el.min)) {
+      el.value = el.min;
+    }
+    if (parseInt(el.value) > parseInt(el.max)) {
+      el.value = el.max;
+    }
+  }
+}
+
+
+export { getElement, getZero, convertTime, updateDOMTimer, transformDOM, setInputs };
