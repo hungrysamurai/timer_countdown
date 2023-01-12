@@ -153,15 +153,18 @@ savedContainer.addEventListener("click", (e) => {
 
 // Init/Resume countdown
 countdownPlayBtn.addEventListener("click", () => {
+  console.log(countdownState);
   // Initialize countdown
-  if (!countdownState) {
+  if (!countdownState || countdownState.status === 'done') {
 
     countdownState = initializeCountdown(countdownState, countdownElements);
 
     // If inputs empty
     if (!countdownState) return;
 
-    globalInterval = setInterval(countdownUpdate, 4, countdownState, globalInterval, countdownElements, digitsElements);
+    globalInterval = setInterval(() => {
+      countdownUpdate(countdownState, globalInterval, countdownElements, digitsElements)
+    }, 4);
 
     return;
   }
@@ -174,7 +177,9 @@ countdownPlayBtn.addEventListener("click", () => {
     countdownState = unFreezeCountdown(countdownState, countdownElements);
 
     // Refresh interval
-    globalInterval = setInterval(countdownUpdate, 4, countdownState, globalInterval, countdownElements, digitsElements);
+    globalInterval = setInterval(() => {
+      countdownUpdate(countdownState, globalInterval, countdownElements, digitsElements)
+    }, 4);
   }
 });
 

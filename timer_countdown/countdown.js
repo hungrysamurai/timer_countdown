@@ -56,29 +56,28 @@ const resetCountdown = (countdownState, interval, { inputsArray, countdownPlayIc
 
  deActivateInputs(inputsArray, false);
 
- // inputsArray.forEach(
- //  (input) => (input.value = "")
- // );
-
  updateDOMTimer(undefined, digitsElements);
 
  inputsArray.forEach(
   (input) => (input.value = "")
  );
+
+ console.log(countdownState);
+
  return countdownState;
 }
 
 // Countdown update function
 const countdownUpdate = (countdownState, interval, countdownElements, digitsElements) => {
 
- const { endTime } = countdownState;
+ let { endTime, countdownTime } = countdownState;
 
- const t = endTime - Date.now();
- countdownState.countdownTime = t;
+ countdownTime = endTime - Date.now();
+ updateDOMTimer(convertTime(countdownTime), digitsElements);
 
- updateDOMTimer(convertTime(t), digitsElements);
 
- if (t <= 4) {
+ if (countdownTime <= 4) {
+  countdownState.status = 'done';
   resetCountdown(countdownState, interval, countdownElements, digitsElements);
  }
 }
