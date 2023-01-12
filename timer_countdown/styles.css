@@ -70,7 +70,7 @@ body {
 .mode-container .progress-bar {
   position: relative;
   width: 100%;
-  border-radius: 0 5px 3px 0;
+  border-radius: 0 5px 5px 0;
   height: 3%;
   z-index: 1;
   transition: width 0.03s ease-in-out;
@@ -183,6 +183,10 @@ body {
 .countdown-form input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.countdown-form input {
+  -moz-appearance: textfield;
 }
 
 /* Timer Buttons container */

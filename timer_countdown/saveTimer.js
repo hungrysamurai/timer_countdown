@@ -28,9 +28,14 @@ const saveTimer = (timerState, { savedCloseBtn, savedTimersEl }) => {
   if (timerState.status === "active")
     currentTime = Date.now() - timerState.initialTimestamp;
   else currentTime = timerState.timerProgress;
+  console.log(savedTimers);
 
-  savedTimers.push(currentTime);
-
+  // Set limit to 12 timers
+  if (savedTimers.length < 10) {
+    savedTimers.push(currentTime);
+  } else {
+    return;
+  }
   if (savedTimers.length === 1) {
     savedCloseBtn.classList.remove("hidden");
   }
