@@ -1,305 +1,303 @@
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@500&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --index: calc(1vw + 1vh);
-    --color-dark: #262b2f;
-    --color-primary: #94d2bd;
-    --color-primary2: #ec3b85;
-    --color-secondary: #ee9b00;
+  --index: calc(1vw + 1vh);
+  --color-dark: #262b2f;
+  --color-primary: #94d2bd;
+  --color-primary2: #ec3b85;
+  --color-secondary: #ee9b00;
 }
 
 body {
-    font-family: 'Martian Mono', monospace;
+  font-family: "Martian Mono", monospace;
 }
 
 .main-container {
-    position: relative;
+  position: relative;
 }
 
 .clock-container {
-    padding: 12px;
-    background-color: var(--color-dark);
-    z-index: 2;
-    border-radius: 36px;
-    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
-        0px 3px 24px rgba(0, 0, 0, 0.33);
+  padding: 12px;
+  background-color: var(--color-dark);
+  z-index: 2;
+  border-radius: 36px;
+  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+    0px 3px 24px rgba(0, 0, 0, 0.33);
 }
 
 .clock-container div:nth-child(even) {
-    transition: all 0.33s ease-in-out;
+  transition: all 0.33s ease-in-out;
 }
 
 .clock-container.timer div:nth-child(even) {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .clock-container.countdown div:nth-child(even) {
-    color: var(--color-primary2);
+  color: var(--color-primary2);
 }
 
 .clock-digits {
-    font-size: calc(var(--index) * 5);
+  font-size: calc(var(--index) * 5);
 }
 
 /* Mode Container */
 .mode-container {
-    position: absolute;
-    height: 100%;
-    width: 66%;
-    top: 50%;
-    left: 50%;
-    background-color: var(--color-dark);
-    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
-        0px 3px 24px rgba(0, 0, 0, 0.33);
-    border-radius: 36px;
-    overflow: hidden;
-    transition: all 0.33s ease-in-out;
+  position: absolute;
+  height: 100%;
+  width: 66%;
+  top: 50%;
+  left: 50%;
+  background-color: var(--color-dark);
+  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+    0px 3px 24px rgba(0, 0, 0, 0.33);
+  border-radius: 36px;
+  overflow: hidden;
+  transition: all 0.33s ease-in-out;
 }
 
-.mode-container.timer {
-    /* Adjust height */
-    transform: translate(-50%, -100%);
-}
-
-.mode-container.countdown {
-    /* Adjust height */
-    transform: translate(-50%, -130%);
+.mode-container {
+  /* Adjust height */
+  transform: translate(-50%, -100%);
 }
 
 .mode-container .progress-bar {
-    width: 100%;
-    height: 4%;
-    transition: all 0.33s ease-in-out;
+  width: 100%;
+  height: 4%;
+  transition: all 0.33s ease-in-out;
 }
 
 .mode-container .progress-bar.timer {
-    background-color: var(--color-primary);
+  background-color: var(--color-primary);
 }
 
 .mode-container .progress-bar.countdown {
-    background-color: var(--color-primary2);
+  background-color: var(--color-primary2);
+}
+
+.mode-container.timer .mode-switcher {
+  height: 50%;
+}
+
+.mode-container.countdown .mode-switcher {
+  height: 22%;
 }
 
 /* Mode switcher */
 
 .mode-switcher {
-    width: 100%;
-    height: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.33s ease-in-out;
 }
 
 .mode1,
 .mode2 {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mode-switcher input[type="radio"] {
-    opacity: 0;
-    position: fixed;
-    width: 0;
-    pointer-events: none !important;
+  opacity: 0;
+  position: fixed;
+  width: 0;
+  pointer-events: none !important;
 }
 
 .mode-switcher label {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    background-color: var(--color-dark);
-    padding: 10px 20px;
-    font-size: calc(var(--index) * .8);
-
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: var(--color-dark);
+  padding: 10px 20px;
+  font-size: calc(var(--index) * 0.8);
 }
 
-.mode-switcher input[type="radio"]:checked+label {
-    color: var(--color-dark);
+.mode-switcher input[type="radio"]:checked + label {
+  color: var(--color-dark);
 }
 
-.mode-switcher input[type="radio"]#timer-radio:checked+label {
-    background-color: var(--color-primary);
+.mode-switcher input[type="radio"]#timer-radio:checked + label {
+  background-color: var(--color-primary);
 }
 
-.mode-switcher input[type="radio"]#countdown-radio:checked+label {
-    background-color: var(--color-primary2);
+.mode-switcher input[type="radio"]#countdown-radio:checked + label {
+  background-color: var(--color-primary2);
 }
 
 /* Countdown form */
 .countdown-form {
-    padding: 1%;
+  padding: 1%;
 }
 
 .countdown-form input {
-    padding: 1%;
-    width: 20%;
-    border-radius: 5px;
-    border: none;
-    margin: 0 3px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: var(--color-dark);
+  padding: 1%;
+  width: 20%;
+  border-radius: 5px;
+  border: none;
+  margin: 0 5px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-dark);
 }
 
 .countdown-form input:focus {
-    outline: none;
+  outline: none;
 }
 
 .countdown-form input::placeholder {
-    text-align: center;
+  text-align: center;
 }
 
 .countdown-form input::-webkit-outer-spin-button,
 .countdown-form input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
-
 
 /* Timer Buttons container */
 .timer-buttons-container {
-    display: none;
-    position: absolute;
-    height: 100%;
-    width: 66%;
-    top: 50%;
-    left: 50%;
-    /* Adjust height */
-    transform: translate(-50%, 0%);
-    background-color: var(--color-dark);
-    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
-        0px 3px 24px rgba(0, 0, 0, 0.33);
-    border-radius: 36px;
-    z-index: 1;
-    overflow: hidden;
-
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 66%;
+  top: 50%;
+  left: 50%;
+  /* Adjust height */
+  transform: translate(-50%, 0%);
+  background-color: var(--color-dark);
+  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+    0px 3px 24px rgba(0, 0, 0, 0.33);
+  border-radius: 36px;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .timer-buttons-container.show {
-    display: block;
+  display: block;
 }
 
 /* Countdown buttons container */
 .countdown-buttons-container {
-    display: none;
-    position: absolute;
-    height: 100%;
-    width: 66%;
-    top: 50%;
-    left: 50%;
-    /* Adjust height */
-    transform: translate(-50%, 0%);
-    background-color: var(--color-dark);
-    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
-        0px 3px 24px rgba(0, 0, 0, 0.33);
-    border-radius: 36px;
-    z-index: 1;
-    overflow: hidden;
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 66%;
+  top: 50%;
+  left: 50%;
+  /* Adjust height */
+  transform: translate(-50%, 0%);
+  background-color: var(--color-dark);
+  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+    0px 3px 24px rgba(0, 0, 0, 0.33);
+  border-radius: 36px;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .countdown-buttons-container.show {
-    display: block;
+  display: block;
 }
 
 .buttons {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
 .control-button {
-    margin-top: 17%;
-    font-size: calc(var(--index) * 3.3);
-    cursor: pointer;
-    color: var(--color-secondary);
+  margin-top: 17%;
+  font-size: calc(var(--index) * 3.3);
+  cursor: pointer;
+  color: var(--color-secondary);
 }
 
 .timer-buttons-container .control-button:hover {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .countdown-buttons-container .control-button:hover {
-    color: var(--color-primary2);
+  color: var(--color-primary2);
 }
 
 .control-button:active {
-    transform: scale(0.9);
+  transform: scale(0.9);
 }
 
 .timer-buttons-container .control-button.active {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .countdown-buttons-container .control-button.active {
-    color: var(--color-primary2);
+  color: var(--color-primary2);
 }
-
 
 /* Saved timers */
 .saved-timers-container {
-    position: fixed;
-    bottom: 8%;
-    min-width: 66%;
-    z-index: 1;
+  position: fixed;
+  bottom: 8%;
+  min-width: 66%;
+  z-index: 1;
 }
 
 .saved-timers-container button {
-    font-size: calc(var(--index) * 1);
-    color: var(--color-secondary)
+  font-size: calc(var(--index) * 1);
+  color: var(--color-secondary);
 }
 
 .saved-timers-container button:hover {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .saved-timers-container button:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .saved-timers-container button.hidden {
-    opacity: 0;
+  opacity: 0;
 }
 
 .saved-timers div:nth-child(even) {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .saved-timer {
-    font-size: calc(var(--index) * .6);
+  font-size: calc(var(--index) * 0.6);
 }
 
 @media (max-width: 768px) {
-    .clock-digits {
-        font-size: 70px;
-    }
+  .clock-digits {
+    font-size: 70px;
+  }
 }
 
 @media (max-width: 576px) {
-    .clock-digits {
-        font-size: 48px;
-    }
+  .clock-digits {
+    font-size: 48px;
+  }
 
-    .clock-units {
-        font-size: 10px;
-    }
+  .clock-units {
+    font-size: 10px;
+  }
 
-    .countdown-form input::placeholder {
-        font-size: 8px;
-    }
+  .countdown-form input {
+    padding: 0;
+  }
 }
