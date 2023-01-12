@@ -1,7 +1,7 @@
-import { updateDOMTimer, convertTime } from "./utils.js";
+import { updateDOMTimer, convertTime, updateProgressBar } from "./utils.js";
 
 // Init countdown from 00
-const initializeCountdown = (countdownState, { inputsArray, countdownPlayIcon, countdownPlayBtn }) => {
+const initializeCountdown = (countdownState, { inputsArray, countdownPlayIcon, countdownPlayBtn, progressBar }) => {
 
  const [hoursInput, minutesInput, secondsInput] = inputsArray;
 
@@ -13,11 +13,12 @@ const initializeCountdown = (countdownState, { inputsArray, countdownPlayIcon, c
  if (totalTime === 0 || totalTime >= 359_999_999) return;
 
  deActivateInputs(inputsArray, true);
-
+ updateProgressBar(progressBar, 0);
  countdownState = {
   status: "active",
   countdownTime: totalTime,
-  endTime: Date.now() + totalTime
+  endTime: Date.now() + totalTime,
+  totalTime: totalTime
  };
 
  countdownPlayIcon.className = "bi bi-pause";
@@ -62,21 +63,24 @@ const resetCountdown = (countdownState, interval, { inputsArray, countdownPlayIc
   (input) => (input.value = "")
  );
 
- console.log(countdownState);
-
  return countdownState;
 }
 
 // Countdown update function
 const countdownUpdate = (countdownState, interval, countdownElements, digitsElements) => {
 
- let { endTime, countdownTime } = countdownState;
+ const { endTime } = countdownState;
+ const { progressBar } = countdownElements;
 
- countdownTime = endTime - Date.now();
- updateDOMTimer(convertTime(countdownTime), digitsElements);
+ let t = endTime - Date.now();
+ countdownState.countdownTime = t;
 
+ updateDOMTimer(convertTime(t), digitsElements);
 
- if (countdownTime <= 4) {
+ const progress = (((countdownState.totalTime - t) / countdownState.totalTime) * 100).toFixed(2);
+
+ updateProgressBar(progressBar, progress)
+ if (countdownState.countdownTime <= 4) {
   countdownState.status = 'done';
   resetCountdown(countdownState, interval, countdownElements, digitsElements);
  }
@@ -88,5 +92,7 @@ function deActivateInputs(inputs, mode) {
   input.style.color = mode ? "lightgray" : "var(--color-dark)";
  });
 }
+
+
 
 export { initializeCountdown, freezeCountdown, unFreezeCountdown, resetCountdown, countdownUpdate }

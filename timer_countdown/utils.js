@@ -58,6 +58,10 @@ const transformDOM = (mode, elementsObject) => {
   document.querySelector(`.${mode}-buttons-container`).classList.add("show");
 }
 
+const updateProgressBar = (el, width) => {
+  el.style.width = `${width}%`
+}
+
 const setInputs = (inputsArray) => {
   // set inputs numeric limitations
   inputsArray.forEach((input) => {
@@ -79,4 +83,5 @@ function setUpInput(el) {
 }
 
 
-export { getElement, getZero, convertTime, updateDOMTimer, transformDOM, setInputs };
+
+export { getElement, getZero, convertTime, updateDOMTimer, transformDOM, setInputs, updateProgressBar };

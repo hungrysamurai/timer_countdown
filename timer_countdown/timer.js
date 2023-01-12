@@ -1,4 +1,4 @@
-import { updateDOMTimer, convertTime } from "./utils.js";
+import { updateDOMTimer, convertTime, updateProgressBar } from "./utils.js";
 
 // Init timer from 00
 const initializeTimer = (timerState, { timerPlayIcon, timerPlayBtn }) => {

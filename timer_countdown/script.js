@@ -1,5 +1,5 @@
 // Import utils
-import { getElement, transformDOM, setInputs } from "./utils.js";
+import { getElement, transformDOM, setInputs, updateProgressBar } from "./utils.js";
 
 // Import timer functions
 import {
@@ -63,7 +63,8 @@ const countdownElements = {
   countdownPlayBtn,
   countdownPlayIcon,
   countdownStopBtn,
-  inputsArray
+  inputsArray,
+  progressBar
 }
 
 // Timer digits
@@ -89,6 +90,9 @@ modeSwitcher.addEventListener("click", (e) => {
 
   const currentMode = e.target.id.split("-")[0];
   transformDOM(currentMode, { clockContainer, modeContainer, progressBar, timerButtonsContainer, countdownButtonsContainer });
+
+  // Update progress bar
+  currentMode === 'timer' ? updateProgressBar(progressBar, 100) : updateProgressBar(progressBar, 0);
 
   // Reset timer & countdown
   timerState = resetTimer(timerState, timerElements, digitsElements, globalInterval);
@@ -153,7 +157,6 @@ savedContainer.addEventListener("click", (e) => {
 
 // Init/Resume countdown
 countdownPlayBtn.addEventListener("click", () => {
-  console.log(countdownState);
   // Initialize countdown
   if (!countdownState || countdownState.status === 'done') {
 
@@ -186,6 +189,7 @@ countdownPlayBtn.addEventListener("click", () => {
 // Reset countdown
 countdownStopBtn.addEventListener("click", () => {
   countdownState = resetCountdown(countdownState, globalInterval, countdownElements, digitsElements);
+  updateProgressBar(progressBar, 0)
 });
 
 
