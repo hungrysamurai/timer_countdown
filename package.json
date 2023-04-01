@@ -1,0 +1,38 @@
+{
+  "name": "timer_countdown",
+  "version": "1.0.0",
+  "description": "Timer & Countdown",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url ''"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hungrysamurai/timer_countdown.git"
+  },
+  "keywords": [
+    "timer",
+    "countdown"
+  ],
+  "author": "hungrysamurai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hungrysamurai/timer_countdown/issues"
+  },
+  "homepage": "https://github.com/hungrysamurai/timer_countdown#readme",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-uglify": "^3.0.2",
+    "parcel": "^2.8.3"
+  },
+  "dependencies": {},
+  "targets": {
+    "default": {
+      "publicUrl": "./"
+    }
+  }
+}

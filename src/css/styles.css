@@ -23,8 +23,8 @@ body {
 }
 
 .clock-container {
-  padding: 12px;
-  background: url("./dark_noise.jpg");
+  padding: 1rem;
+  background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 50px 50px;
   z-index: 2;
@@ -56,7 +56,7 @@ body {
   width: 66%;
   top: 50%;
   left: 50%;
-  background: url("./dark_noise.jpg");
+  background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 75px 75px;
   box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
@@ -84,11 +84,9 @@ body {
   content: "";
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to right,
-    var(--color-primary) 10% 50%,
-    var(--color-primary2)
-  );
+  background: linear-gradient(to right,
+      var(--color-primary) 10% 50%,
+      var(--color-primary2));
 }
 
 .mode-container .progress-bar.timer {
@@ -142,22 +140,22 @@ body {
   width: 100%;
   height: 100%;
   text-align: center;
-  background: url("./dark_noise.jpg");
+  background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 75px 75px;
   padding: 10px 20px;
   font-size: calc(var(--index) * 0.8);
 }
 
-.mode-switcher input[type="radio"]:checked + label {
+.mode-switcher input[type="radio"]:checked+label {
   color: var(--color-dark);
 }
 
-.mode-switcher input[type="radio"]#timer-radio:checked + label {
+.mode-switcher input[type="radio"]#timer-radio:checked+label {
   background: var(--color-primary);
 }
 
-.mode-switcher input[type="radio"]#countdown-radio:checked + label {
+.mode-switcher input[type="radio"]#countdown-radio:checked+label {
   background: var(--color-primary2);
 }
 
@@ -205,7 +203,7 @@ body {
   left: 50%;
   /* Adjust height */
   transform: translate(-50%, 0%);
-  background: url("./dark_noise.jpg");
+  background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 75px 75px;
   box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
@@ -229,7 +227,7 @@ body {
   left: 50%;
   /* Adjust height */
   transform: translate(-50%, 0%);
-  background: url("./dark_noise.jpg");
+  background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 75px 75px;
   box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),

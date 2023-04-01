@@ -1,4 +1,4 @@
-import { getElement, convertTime, getZero } from "./utils.js";
+import { convertTime, getZero } from "./utils.js";
 
 let savedTimers;
 
@@ -57,15 +57,20 @@ const resetSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
 
   // Hide button
   savedCloseBtn.classList.add("hidden");
-}
+};
 
 // Update seved timers container
-function updateDOMSavedTimers({ hours, minutes, seconds, milliseconds }, savedTimersEl) {
+function updateDOMSavedTimers(
+  { hours, minutes, seconds, milliseconds },
+  savedTimersEl
+) {
   const element = document.createElement("div");
   element.className = "saved-timer m-1";
   element.innerHTML = `
   <span>
-  ${getZero(hours)}:${getZero(minutes)}:${getZero(seconds)}:${getZero(milliseconds)}
+  ${getZero(hours)}:${getZero(minutes)}:${getZero(seconds)}:${getZero(
+    milliseconds
+  )}
   </span>
   `;
 
