@@ -327,4 +327,9 @@ body {
   .countdown-form input {
     padding: 0;
   }
+
+  .control-button {
+    margin-top: 22%;
+
+  }
 }
