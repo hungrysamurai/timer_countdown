@@ -28,7 +28,6 @@ const saveTimer = (timerState, { savedCloseBtn, savedTimersEl }) => {
   if (timerState.status === "active")
     currentTime = Date.now() - timerState.initialTimestamp;
   else currentTime = timerState.timerProgress;
-  console.log(savedTimers);
 
   // Set limit to 12 timers
   if (savedTimers.length < 10) {

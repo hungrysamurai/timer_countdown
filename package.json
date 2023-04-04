@@ -22,14 +22,13 @@
   },
   "homepage": "https://github.com/hungrysamurai/timer_countdown#readme",
   "devDependencies": {
-    "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-uglify": "^3.0.2",
     "parcel": "^2.8.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.4"
+  },
   "targets": {
     "default": {
       "publicUrl": "./"
