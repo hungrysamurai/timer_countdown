@@ -1,42 +1,37 @@
-
 // Import utils
 import {
   getElement,
   transformDOM,
-  setInputs,
+  setInputsLimits,
   updateProgressBar,
-} from "./utils.js";
+  getTotalTimeFromInputs,
+  deactivateInputs,
+  reset,
+} from "./utils";
 
 // Import timer functions
-import {
-  initializeTimer,
-  freezeTimer,
-  unFreezeTimer,
-  resetTimer,
-  timerUpdate,
-} from "./timer.js";
+import { TimerState, timerUpdate } from "./timer";
 
 // Import save timer functions
-import { getSavedTimers, saveTimer, resetSavedTimers } from "./saveTimer.js";
+import { getSavedTimers, saveTimer, resetSavedTimers } from "./saveTimer";
 
 // Import countdown functions
-import {
-  initializeCountdown,
-  freezeCountdown,
-  unFreezeCountdown,
-  resetCountdown,
-  countdownUpdate,
-} from "./countdown.js";
+import { CountdownState, countdownUpdate } from "./countdown";
 
 // Mode switch container
 const modeContainer = getElement(".mode-container");
 const modeSwitcher = getElement(".mode-switcher");
 const progressBar = getElement(".progress-bar");
+const modeLabels = modeSwitcher.querySelectorAll(".mode-switcher label");
 
 // Saved timers elements
 const savedCloseBtn = getElement(".saved-timers-container button");
 const savedTimersEl = getElement(".saved-timers");
 
+/**
+ * Object of DOM elements that relates to save time functionality
+ * @type {Object}
+ */
 const saveTimerElements = {
   savedCloseBtn,
   savedTimersEl,
@@ -50,6 +45,10 @@ const timerStopBtn = getElement(".timer-stop-btn");
 const saveBtn = getElement(".save-btn");
 const savedContainer = getElement(".saved-timers-container");
 
+/**
+ * Object of DOM elements related to timer functionality
+ * @type {Object}
+ */
 const timerElements = {
   timerButtonsContainer,
   timerPlayBtn,
@@ -68,8 +67,16 @@ const hoursInput = getElement("#hours-input");
 const minutesInput = getElement("#minutes-input");
 const secondsInput = getElement("#seconds-input");
 
+/**
+ * Array of DOM elements - input fields for hours, minutes as=nd seconds for countdown
+ * @type {Array}
+ */
 const inputsArray = [hoursInput, minutesInput, secondsInput];
 
+/**
+ * Object of DOM elements related to countdown functionality
+ * @type {Object}
+ */
 const countdownElements = {
   countdownButtonsContainer,
   countdownPlayBtn,
@@ -83,50 +90,66 @@ const countdownElements = {
 
 // Container
 const clockContainer = getElement(".clock-container");
+
 // Digits
 const hoursEl = getElement("#hours");
 const minutesEl = getElement("#minutes");
 const secondsEl = getElement("#seconds");
 const millisecondsEl = getElement("#milliseconds");
 
+/**
+ * Object of DOM elements - digits of timer/countdown
+ * @type {Object}
+ */
 let digitsElements = { hoursEl, minutesEl, secondsEl, millisecondsEl };
 
+/**
+ * Current interval id
+ * @type {number}
+ */
 let globalInterval;
+
+/**
+ * Current timer state object
+ * @type {Object}
+ */
 let timerState;
+
+/**
+ * Current countdown state object
+ * @type {Object}
+ */
 let countdownState;
 
 // Switch modes
-modeSwitcher.addEventListener("click", (e) => {
-  if (e.pointerId === 1 || e.pointerId === 0) return;
+modeLabels.forEach((label) => {
+  label.addEventListener("click", (e) => {
+    const currentMode = e.target.id.split("-")[0];
 
-  const currentMode = e.target.id.split("-")[0];
-  transformDOM(currentMode, {
-    clockContainer,
-    modeContainer,
-    progressBar,
-    timerButtonsContainer,
-    countdownButtonsContainer,
+    transformDOM(currentMode, {
+      clockContainer,
+      modeContainer,
+      progressBar,
+      timerButtonsContainer,
+      countdownButtonsContainer,
+    });
+
+    // Update progress bar
+    currentMode === "timer"
+      ? updateProgressBar(progressBar, 100)
+      : updateProgressBar(progressBar, 0);
+
+    reset(
+      globalInterval,
+      timerElements,
+      countdownElements,
+      digitsElements,
+      inputsArray
+    );
+
+    timerState = null;
+    countdownState = null;
   });
-
-  // Update progress bar
-  currentMode === "timer"
-    ? updateProgressBar(progressBar, 100)
-    : updateProgressBar(progressBar, 0);
-
-  // Reset timer & countdown
-  timerState = resetTimer(
-    timerState,
-    timerElements,
-    digitsElements,
-    globalInterval
-  );
-
-  countdownState = resetCountdown(
-    countdownState,
-    globalInterval,
-    countdownElements,
-    digitsElements
-  );
 });
 
 ///////////////////////////////////////   TIMER
@@ -134,8 +157,10 @@ modeSwitcher.addEventListener("click", (e) => {
 // Play/pause
 timerPlayBtn.addEventListener("click", () => {
   if (!timerState) {
-    // Initialize timer
-    timerState = initializeTimer(timerState, timerElements);
+    timerPlayIcon.className = "bi bi-pause";
+    timerPlayBtn.classList.add("active");
+
+    timerState = new TimerState();
 
     // Initialize interval
     globalInterval = setInterval(
@@ -144,18 +169,24 @@ timerPlayBtn.addEventListener("click", () => {
       timerState.initialTimestamp,
       digitsElements
     );
+
     return;
   }
 
   // Pause timer
   if (timerState.status === "active") {
-    timerState = freezeTimer(timerState, timerElements, globalInterval);
+    timerState.freeze();
+    timerPlayIcon.className = "bi bi-play";
+    clearInterval(globalInterval);
   }
+
   // Resume timer
   else if (timerState.status === "paused") {
-    timerState = unFreezeTimer(timerState, timerElements);
+    timerState.unFreeze();
 
-    // Refresh interval
+    timerPlayIcon.className = "bi bi-pause";
+    timerPlayBtn.classList.add("active");
+
     globalInterval = setInterval(
       timerUpdate,
       4,
@@ -167,12 +198,14 @@ timerPlayBtn.addEventListener("click", () => {
 
 // Reset timer
 timerStopBtn.addEventListener("click", () => {
-  timerState = resetTimer(
-    timerState,
+  reset(
+    globalInterval,
     timerElements,
+    countdownElements,
     digitsElements,
-    globalInterval
+    inputsArray
   );
+  timerState = null;
 });
 
 // Save Timer
@@ -193,33 +226,42 @@ savedContainer.addEventListener("click", (e) => {
 countdownPlayBtn.addEventListener("click", () => {
   // Initialize countdown
   if (!countdownState || countdownState.status === "done") {
-    countdownState = initializeCountdown(countdownState, countdownElements);
+    const totalTimeFromInputs = getTotalTimeFromInputs(inputsArray);
 
-    // If inputs empty
-    if (!countdownState) return;
+    if (totalTimeFromInputs === 0 || totalTimeFromInputs >= 359_999_999) return;
+
+    deactivateInputs(inputsArray, true);
+    updateProgressBar(progressBar, 0);
+
+    countdownState = new CountdownState(totalTimeFromInputs);
+
+    countdownPlayIcon.className = "bi bi-pause";
+    countdownPlayBtn.classList.add("active");
 
     globalInterval = setInterval(() => {
       countdownUpdate(
         countdownState,
         globalInterval,
         countdownElements,
-        digitsElements
+        digitsElements,
+        inputsArray
       );
     }, 4);
 
     return;
   }
+
   // Pause countdown
   if (countdownState.status === "active") {
-    countdownState = freezeCountdown(
-      countdownState,
-      globalInterval,
-      countdownElements
-    );
+    countdownState.freeze();
+    countdownPlayIcon.className = "bi bi-play";
+    // Clear interval
+    clearInterval(globalInterval);
   }
   // Resume countdown
   else if (countdownState.status === "paused") {
-    countdownState = unFreezeCountdown(countdownState, countdownElements);
+    countdownState.unFreeze();
+    countdownPlayIcon.className = "bi bi-pause";
 
     // Refresh interval
     globalInterval = setInterval(() => {
@@ -235,15 +277,19 @@ countdownPlayBtn.addEventListener("click", () => {
 
 // Reset countdown
 countdownStopBtn.addEventListener("click", () => {
-  countdownState = resetCountdown(
-    countdownState,
+  reset(
     globalInterval,
+    timerElements,
     countdownElements,
-    digitsElements
+    digitsElements,
+    inputsArray
   );
+
+  countdownState = null;
+
   updateProgressBar(progressBar, 0);
 });
 
 // Init
 getSavedTimers(saveTimerElements);
-setInputs(inputsArray);
+setInputsLimits(inputsArray);

@@ -1,7 +1,16 @@
 import { convertTime, getZero } from "./utils.js";
 
+/**
+ * Array of saved timer values
+ * @type {Array}
+ */
 let savedTimers;
 
+/**
+ * @property {Function} getSavedTimers - Load saved timers from localStorage
+ * @param {Object} saveTimerElements - Object of DOM elements that relates to save time functionality
+ * @returns {void}
+ */
 const getSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   // Check localStorage for saved timers
   if (!localStorage.getItem("savedTimers")) {
@@ -9,7 +18,7 @@ const getSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   }
 
   savedTimers = JSON.parse(localStorage.getItem("savedTimers"));
-
+  console.log(savedTimers);
   // Retrieve saved timers from localStorage and render them to DOM
   savedTimers.forEach((time, i) => {
     // Add close button to container
@@ -20,7 +29,12 @@ const getSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   });
 };
 
-// Save timer
+/**
+ * @property {Function} saveTimer - Save timer value
+ * @param {Object} timerState - current timer state object
+ * @param {Object} saveTimerElements - Object of DOM elements that relates to save time functionality
+ * @returns {void}
+ */
 const saveTimer = (timerState, { savedCloseBtn, savedTimersEl }) => {
   let currentTime;
   if (!timerState) return;
@@ -30,8 +44,12 @@ const saveTimer = (timerState, { savedCloseBtn, savedTimersEl }) => {
   else currentTime = timerState.timerProgress;
 
   // Set limit to 12 timers
-  if (savedTimers.length < 10) {
-    savedTimers.push(currentTime);
+  if (savedTimers.length < 12) {
+    if (savedTimers[savedTimers.length - 1] === currentTime) {
+      return;
+    } else {
+      savedTimers.push(currentTime);
+    }
   } else {
     return;
   }
@@ -43,7 +61,11 @@ const saveTimer = (timerState, { savedCloseBtn, savedTimersEl }) => {
   updateDOMSavedTimers(convertTime(currentTime), savedTimersEl);
 };
 
-// Reset all saved timers
+/**
+ * @property {Function} resetSavedTimers - Reset all saved timers
+ * @param {Object} saveTimerElements - Object of DOM elements that relates to save time functionality
+ * @returns {void}
+ */
 const resetSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   // Clear DOM
   savedTimersEl.innerHTML = "";
@@ -58,7 +80,12 @@ const resetSavedTimers = ({ savedCloseBtn, savedTimersEl }) => {
   savedCloseBtn.classList.add("hidden");
 };
 
-// Update seved timers container
+/**
+ * @property {Function} updateDOMSavedTimers - Add new value to saved timer values
+ * @param {Object} - Object with hh:mm:ss:mm
+ * @param {HTMLElement} savedTimersEl - DOM element, container for save timer values
+ * @returns {void}
+ */
 function updateDOMSavedTimers(
   { hours, minutes, seconds, milliseconds },
   savedTimersEl

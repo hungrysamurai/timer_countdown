@@ -1,69 +1,39 @@
-import { updateDOMTimer, convertTime, updateProgressBar } from "./utils.js";
+import { updateDOMTimer, convertTime } from "./utils.js";
 
-// Init timer from 00
-const initializeTimer = (timerState, { timerPlayIcon, timerPlayBtn }) => {
-  // Set initial timer state object
-  timerState = {
-    status: "active",
-    timerProgress: 0,
-    initialTimestamp: Date.now(),
-  };
+/**
+ * Class that generates timer state object
+ */
+class TimerState {
+  /**
+   *
+   * @this TimerState
+   */
+  constructor() {
+    this.status = "active";
+    this.timerProgress = 0;
+    this.initialTimestamp = Date.now();
+  }
 
-  // Change button
-  timerPlayIcon.className = "bi bi-pause";
-  timerPlayBtn.classList.add("active");
+  freeze() {
+    this.status = "paused";
+    this.timerProgress = Date.now() - this.initialTimestamp;
+  }
 
-  return timerState;
-};
+  unFreeze() {
+    this.status = "active";
+    this.initialTimestamp = Date.now() - this.timerProgress;
+  }
+}
 
-// Pause timer
-const freezeTimer = (timerState, { timerPlayIcon }, interval) => {
-  // Update status
-  timerState.status = "paused";
-  timerState.timerProgress = Date.now() - timerState.initialTimestamp;
-
-  // Change DOM
-  timerPlayIcon.className = "bi bi-play";
-
-  // Stop Interval
-  clearInterval(interval);
-
-  return timerState;
-};
-
-// Resume Timer
-const unFreezeTimer = (timerState, { timerPlayIcon, timerPlayBtn }) => {
-  // Update status
-  timerState.status = "active";
-  timerState.initialTimestamp = Date.now() - timerState.timerProgress;
-
-  // Change DOM
-  timerPlayIcon.className = "bi bi-pause";
-  timerPlayBtn.classList.add("active");
-
-  return timerState;
-};
-
-// Reset timer to 00
-const resetTimer = (
-  timerState,
-  { timerPlayIcon, timerPlayBtn },
-  digitsElements,
-  interval
-) => {
-  timerState = undefined;
-  clearInterval(interval);
-  timerPlayIcon.className = "bi bi-play";
-  timerPlayBtn.classList.remove("active");
-  updateDOMTimer(undefined, digitsElements);
-
-  return timerState;
-};
-
-// Update timer function
+/**
+ * @property {Function} timerUpdate - Timer update function
+ * @param {number} startTime - initial time value
+ * @param {Object} digitsElements - timer digits DOM elements
+ * @returns {void}
+ */
 const timerUpdate = (startTime, digitsElements) => {
   const t = Date.now() - startTime;
   updateDOMTimer(convertTime(t), digitsElements);
 };
 
-export { initializeTimer, freezeTimer, unFreezeTimer, resetTimer, timerUpdate };
+export { TimerState, timerUpdate };
