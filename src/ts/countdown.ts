@@ -1,20 +1,25 @@
+import { DOMElementsList } from "./types";
 import {
   updateDOMTimer,
   convertTime,
   updateProgressBar,
   deactivateInputs,
-} from "./utils.js";
+} from "./utils";
 
 /**
  * Class that generates countdown state object
  */
 class CountdownState {
+  status: string;
+  countdownTime: number;
+  endTime: number;
+  totalTime: number;
   /**
    *
    * @param {number} totalTime - time in milliseconds
    * @this CountdownState
    */
-  constructor(totalTime) {
+  constructor(totalTime: number) {
     this.status = "active";
     this.countdownTime = totalTime;
     this.endTime = Date.now() + totalTime;
@@ -38,15 +43,14 @@ class CountdownState {
  * @param {Object} countdownElements - countdown DOM elements
  * @param {Object} digitsElements - timer digits DOM elements
  * @param {Array} inputsArray - array of DOM elements - input fields
- * @returns {void}
  */
 const countdownUpdate = (
-  countdownState,
-  interval,
-  countdownElements,
-  digitsElements,
-  inputsArray
-) => {
+  countdownState: CountdownState,
+  interval: number,
+  countdownElements: DOMElementsList,
+  digitsElements: DOMElementsList,
+  inputsArray: HTMLInputElement[]
+): void => {
   const { endTime } = countdownState;
   const { progressBar } = countdownElements;
 
@@ -55,25 +59,30 @@ const countdownUpdate = (
 
   updateDOMTimer(convertTime(t), digitsElements);
 
-  const progress = (
-    ((countdownState.totalTime - t) / countdownState.totalTime) *
-    100
-  ).toFixed(2);
+  const progress = Number(
+    (((countdownState.totalTime - t) / countdownState.totalTime) * 100).toFixed(
+      2
+    )
+  );
 
-  updateProgressBar(progressBar, progress);
+  updateProgressBar(progressBar as Element, progress);
 
   if (countdownState.countdownTime <= 4) {
     countdownState.status = "done";
 
-    countdownElements.countdownPlayIcon.className = "bi bi-play";
-    countdownElements.countdownPlayBtn.classList.remove("active");
+    const { countdownPlayIcon, countdownPlayBtn } = countdownElements;
+
+    countdownPlayIcon.className = "bi bi-play";
+    countdownPlayBtn.classList.remove("active");
 
     clearInterval(interval);
 
     updateDOMTimer(undefined, digitsElements);
 
-    inputsArray.forEach((input) => (input.value = ""));
-    deactivateInputs(inputsArray, false);
+    if (inputsArray.length) {
+      inputsArray.forEach((input) => (input.value = ""));
+      deactivateInputs(inputsArray, false);
+    }
   }
 };
 

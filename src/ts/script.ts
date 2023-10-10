@@ -1,3 +1,6 @@
+// Import type
+import { DOMElementsList } from "./types";
+
 // Import utils
 import {
   getElement,
@@ -30,9 +33,8 @@ const savedTimersEl = getElement(".saved-timers");
 
 /**
  * Object of DOM elements that relates to save time functionality
- * @type {Object}
  */
-const saveTimerElements = {
+const saveTimerElements: DOMElementsList = {
   savedCloseBtn,
   savedTimersEl,
 };
@@ -47,9 +49,8 @@ const savedContainer = getElement(".saved-timers-container");
 
 /**
  * Object of DOM elements related to timer functionality
- * @type {Object}
  */
-const timerElements = {
+const timerElements: DOMElementsList = {
   timerButtonsContainer,
   timerPlayBtn,
   timerPlayIcon,
@@ -63,26 +64,27 @@ const countdownButtonsContainer = getElement(".countdown-buttons-container");
 const countdownPlayBtn = getElement(".countdown-play-btn");
 const countdownPlayIcon = getElement(".countdown-play-btn .bi.bi-play");
 const countdownStopBtn = getElement(".countdown-stop-btn");
-const hoursInput = getElement("#hours-input");
-const minutesInput = getElement("#minutes-input");
-const secondsInput = getElement("#seconds-input");
+const hoursInput = getElement("#hours-input") as HTMLInputElement;
+const minutesInput = getElement("#minutes-input") as HTMLInputElement;
+const secondsInput = getElement("#seconds-input") as HTMLInputElement;
 
 /**
- * Array of DOM elements - input fields for hours, minutes as=nd seconds for countdown
- * @type {Array}
+ * Array of DOM elements - input fields for hours, minutes and seconds for countdown
  */
-const inputsArray = [hoursInput, minutesInput, secondsInput];
+const inputsArray: HTMLInputElement[] = [
+  hoursInput,
+  minutesInput,
+  secondsInput,
+];
 
 /**
  * Object of DOM elements related to countdown functionality
- * @type {Object}
  */
-const countdownElements = {
+const countdownElements: DOMElementsList = {
   countdownButtonsContainer,
   countdownPlayBtn,
   countdownPlayIcon,
   countdownStopBtn,
-  inputsArray,
   progressBar,
 };
 
@@ -99,56 +101,59 @@ const millisecondsEl = getElement("#milliseconds");
 
 /**
  * Object of DOM elements - digits of timer/countdown
- * @type {Object}
  */
-let digitsElements = { hoursEl, minutesEl, secondsEl, millisecondsEl };
+let digitsElements: DOMElementsList = {
+  hoursEl,
+  minutesEl,
+  secondsEl,
+  millisecondsEl,
+};
 
 /**
  * Current interval id
- * @type {number}
  */
-let globalInterval;
+let globalInterval: number;
 
 /**
  * Current timer state object
- * @type {Object}
  */
-let timerState;
+let timerState: TimerState | null;
 
 /**
  * Current countdown state object
- * @type {Object}
  */
-let countdownState;
+let countdownState: CountdownState | null;
 
 // Switch modes
 modeLabels.forEach((label) => {
   label.addEventListener("click", (e) => {
-    const currentMode = e.target.id.split("-")[0];
+    if (e.target instanceof Element) {
+      const currentMode = e.target.id.split("-")[0];
 
-    transformDOM(currentMode, {
-      clockContainer,
-      modeContainer,
-      progressBar,
-      timerButtonsContainer,
-      countdownButtonsContainer,
-    });
+      transformDOM(currentMode, {
+        clockContainer,
+        modeContainer,
+        progressBar,
+        timerButtonsContainer,
+        countdownButtonsContainer,
+      });
 
-    // Update progress bar
-    currentMode === "timer"
-      ? updateProgressBar(progressBar, 100)
-      : updateProgressBar(progressBar, 0);
+      // Update progress bar
+      currentMode === "timer"
+        ? updateProgressBar(progressBar, 100)
+        : updateProgressBar(progressBar, 0);
 
-    reset(
-      globalInterval,
-      timerElements,
-      countdownElements,
-      digitsElements,
-      inputsArray
-    );
+      reset(
+        globalInterval,
+        timerElements,
+        countdownElements,
+        digitsElements,
+        inputsArray
+      );
 
-    timerState = null;
-    countdownState = null;
+      timerState = null;
+      countdownState = null;
+    }
   });
 });
 
@@ -210,13 +215,15 @@ timerStopBtn.addEventListener("click", () => {
 
 // Save Timer
 saveBtn.addEventListener("click", () => {
-  saveTimer(timerState, saveTimerElements);
+  saveTimer(timerState as TimerState, saveTimerElements);
 });
 
 // Remove all saved timers
 savedContainer.addEventListener("click", (e) => {
-  if (e.target.tagName === "I" || e.target.tagName === "BUTTON") {
-    resetSavedTimers(saveTimerElements);
+  if (e.target instanceof Element) {
+    if (e.target.tagName === "I" || e.target.tagName === "BUTTON") {
+      resetSavedTimers(saveTimerElements);
+    }
   }
 });
 
@@ -240,7 +247,7 @@ countdownPlayBtn.addEventListener("click", () => {
 
     globalInterval = setInterval(() => {
       countdownUpdate(
-        countdownState,
+        countdownState as CountdownState,
         globalInterval,
         countdownElements,
         digitsElements,
@@ -266,10 +273,11 @@ countdownPlayBtn.addEventListener("click", () => {
     // Refresh interval
     globalInterval = setInterval(() => {
       countdownUpdate(
-        countdownState,
+        countdownState as CountdownState,
         globalInterval,
         countdownElements,
-        digitsElements
+        digitsElements,
+        []
       );
     }, 4);
   }
