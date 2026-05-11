@@ -18,9 +18,6 @@ body {
   font-family: "Martian Mono", monospace;
 }
 
-.main-container {
-  position: relative;
-}
 
 .clock-container {
   padding: 1rem;
@@ -29,7 +26,8 @@ body {
   background-size: 50px 50px;
   z-index: 2;
   border-radius: 36px;
-  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+  box-shadow:
+    0px 24px 48px rgba(0, 0, 0, 0.11),
     0px 3px 24px rgba(0, 0, 0, 0.33);
 }
 
@@ -59,14 +57,13 @@ body {
   background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 75px 75px;
-  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+  box-shadow:
+    0px 24px 48px rgba(0, 0, 0, 0.11),
     0px 3px 24px rgba(0, 0, 0, 0.33);
   border-radius: 36px;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
-}
 
-.mode-container {
   /* Adjust height */
   transform: translate(-50%, -100%);
 }
@@ -194,30 +191,7 @@ body {
 }
 
 /* Timer Buttons container */
-.timer-buttons-container {
-  display: none;
-  position: absolute;
-  height: 100%;
-  width: 66%;
-  top: 50%;
-  left: 50%;
-  /* Adjust height */
-  transform: translate(-50%, 0%);
-  background: url("../dark_noise.jpg");
-  background-repeat: repeat;
-  background-size: 75px 75px;
-  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
-    0px 3px 24px rgba(0, 0, 0, 0.33);
-  border-radius: 36px;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.timer-buttons-container.show {
-  display: block;
-}
-
-/* Countdown buttons container */
+.timer-buttons-container,
 .countdown-buttons-container {
   display: none;
   position: absolute;
@@ -230,13 +204,15 @@ body {
   background: url("../dark_noise.jpg");
   background-repeat: repeat;
   background-size: 75px 75px;
-  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.11),
+  box-shadow:
+    0px 24px 48px rgba(0, 0, 0, 0.11),
     0px 3px 24px rgba(0, 0, 0, 0.33);
   border-radius: 36px;
   z-index: 1;
   overflow: hidden;
 }
 
+.timer-buttons-container.show,
 .countdown-buttons-container.show {
   display: block;
 }
@@ -330,6 +306,5 @@ body {
 
   .control-button {
     margin-top: 22%;
-
   }
 }

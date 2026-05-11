@@ -148,7 +148,7 @@ modeLabels.forEach((label) => {
         timerElements,
         countdownElements,
         digitsElements,
-        inputsArray
+        inputsArray,
       );
 
       timerState = null;
@@ -170,9 +170,9 @@ timerPlayBtn.addEventListener("click", () => {
     // Initialize interval
     globalInterval = setInterval(
       timerUpdate,
-      4,
+      10,
       timerState.initialTimestamp,
-      digitsElements
+      digitsElements,
     );
 
     return;
@@ -194,9 +194,9 @@ timerPlayBtn.addEventListener("click", () => {
 
     globalInterval = setInterval(
       timerUpdate,
-      4,
+      10,
       timerState.initialTimestamp,
-      digitsElements
+      digitsElements,
     );
   }
 });
@@ -208,7 +208,7 @@ timerStopBtn.addEventListener("click", () => {
     timerElements,
     countdownElements,
     digitsElements,
-    inputsArray
+    inputsArray,
   );
   timerState = null;
 });
@@ -251,9 +251,9 @@ countdownPlayBtn.addEventListener("click", () => {
         globalInterval,
         countdownElements,
         digitsElements,
-        inputsArray
+        inputsArray,
       );
-    }, 4);
+    }, 10);
 
     return;
   }
@@ -277,9 +277,9 @@ countdownPlayBtn.addEventListener("click", () => {
         globalInterval,
         countdownElements,
         digitsElements,
-        []
+        [],
       );
-    }, 4);
+    }, 10);
   }
 });
 
@@ -290,7 +290,7 @@ countdownStopBtn.addEventListener("click", () => {
     timerElements,
     countdownElements,
     digitsElements,
-    inputsArray
+    inputsArray,
   );
 
   countdownState = null;
