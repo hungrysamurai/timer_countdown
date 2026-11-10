@@ -33,7 +33,7 @@
   },
   "targets": {
     "default": {
-      "publicUrl": "./"
+      "publicUrl": "/projects/timer_countdown/"
     }
   }
 }

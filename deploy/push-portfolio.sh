@@ -28,10 +28,10 @@ if [[ -z "$PORTFOLIO_HOST" ]]; then
   exit 1
 fi
 
-# With --delete, an empty source would wipe the project. The build uses relative URLs
-# (publicUrl "./"), so its index.html must point at its own timer_countdown.* bundle.
-if [[ ! -f "$BUILD_DIR/index.html" ]] || ! grep -Eq '(src|href)="?timer_countdown\.' "$BUILD_DIR/index.html"; then
-  echo "No build in $BUILD_DIR/, run: pnpm build" >&2
+# With --delete, an empty source would wipe the project. A build for another base path would
+# ask for its files at the root of the site.
+if [[ ! -f "$BUILD_DIR/index.html" ]] || ! grep -q "$BASE_PATH/timer_countdown\." "$BUILD_DIR/index.html"; then
+  echo "No build for $BASE_PATH in $BUILD_DIR/, run: pnpm build" >&2
   exit 1
 fi
 
